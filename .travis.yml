@@ -12,6 +12,8 @@ after_success:
 env:
   global:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  - secure: "CQY8cjim3hA2WlyqZR2xu9Gq/wrqdfd0iM/Ex3HPnUitf04l7eCp8VOqYnkyRq+OuUVpybhz51apo3QkC2Xm/5zQioSgFYNObARzBfvBkT7edjL1jB5WQKvAYaXy7esVah+sct7j+zuuFjeKVLS+Li1U05hOjurcRFM/7Wz8aLccjEd2YcJVt2C1MNPLZebo4mkdc1pannMxMqP10NGCwC4TqikHixVvGOwC9lPSqWoMIxSgW38zmKp7P3jE5cukDLNPj6/8kHsJuu4JvDxsffcyDTXWto75+vDTOnlOGpX2f8Z5fkvbrXpNkFsWZDZRmcI2jJKWUyoCI94Ad9QFn7n/yVnDUCXC/dx/eLy8PdzKqTgM/ad9t2ZrePmYKVuinMbC5QB30NCtljaDfoWUSZ7IjFRX0t2h0PITfumuuCke1PPhY6WdVH/9ibzE5yQq4ZjCcWS6BACaUaTRglOpe4wPlUOl8GZWkDv9wSveS9kWQjfqU7AMvre01BGC913pYFZ93+S2/aT4bDRxN9No6zNt4WYSx6OLwWK2Ot/WNNsswpFv/yjgYgACWeehgW5vbUiAL+kCI/sPKb8lJHRskedkwW8YUzMjcSKPUZfdgUVVBf9ZaRNAsfLHqAXeBSPmT+D0MLbYN2EGe5T3HxJS+w3wJir73IlygubX76l2KSw="
+  - secure: "viIPTwKGspDYrk01e7rgYtqX3AVOYL6gCljTgJAtnhYj32uFYDAwizLnBs6vP63IQlngZoz8EU790B8dv0C+DMCew6H5S6bErBQ7Uinrq/pP1bFigIJkpxrJldLBGF34sXbrJ/Yr0Lh3PTY/7WCsB/hHLkNlOpP+4WNQ+Q06+yCi6CX6a/RY/FG59pRXSRBAKaUwdEKC87oK02iBi2bWIb3MhRwBDsaKe+KUuPHxPgRX6TvtJTD9gRTa1ZoDQimTWb54yBRDtDhHlbL+ZJdJN20+ILHwaPPrkAxD9KpgM4tdLV7/BF4KaqSsuoDFOZRk/vT1oKIHLLan7jxG99u1sDOmKHQmx7xg9CQ78SJ3GcvfkWFeWsiXYIjHLe5LULz2d+SvDC85cmX/NbjECQiGnTtCEKTIsHyaKThQgEAKV53efhiPVGh0RV/SOYzpNmm5DkkWnOkFx/60dARQ+rUz//VNxgeEantjoZbW0pwut891ER9VbCgolOwm2r822i7ddSGSU++jHk0GQPRq6nXdqxQJvr0DDGna+c9X/hefr/Hh2znG2Yfm2uDedlGM/mWGv9y5hQkWGCM8lMDe1pmBlEG1DLpGLONDMKrM99gRUxOgcBHDZ4qQE+VBo0NapO2pDlh/1DzwqtFuiGF53SdnUQ/y14k0A249LFo/xOrPxUU="
 deploy:
   provider: s3
   access_key_id: AKIAJ6ZEDCM762QSIERQ
@@ -24,3 +26,7 @@ deploy:
   on:
     repo: glencoesoftware/ome-help
     branch: dev_5_2
+after_deploy:
+- curl -X POST https://ci.glencoesoftware.com/job/deploy-ome-help/build
+    --user ${JENKINS_USER}:${JENKINS_TOKEN}
+    --data-urlencode "json={\"parameter\": [{\"name\": \"TRAVIS_COMMIT\", \"value\": \"$TRAVIS_COMMIT\"}]}"
