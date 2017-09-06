@@ -4,8 +4,24 @@ cache: bundler
 rvm: 2.2.2
 install: bundle install
 script:
-    - bundle exec jekyll build --config _config_dev.yml
-    - bundle exec htmlproofer ./_site --disable-external --alt-ignore "\/images\/.*.gif"
+- bundle exec jekyll build --config _config_dev.yml
+- bundle exec htmlproofer ./_site --disable-external --alt-ignore "\/images\/.*.gif"
+after_success:
+- mkdir _dist
+- tar Jcf "_dist/_site-${TRAVIS_COMMIT}.tar.xz" _site
 env:
   global:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+deploy:
+  provider: s3
+  access_key_id: AKIAJ6ZEDCM762QSIERQ
+  secret_access_key:
+    secure: q9eibV+ASDGzNG8U0Cu0ZLl4SGZ4TXM1pyDgD4Gz8byF4Rgdf21/NPIhcQULq+orDKsiDCENyKmJ3+aKF25iDbHhMMx7wb5/1IfhKmJb0K55a6vObtZGm49OOq9UuyvId/idFVjNCoTIqKO5dyGG+vVy1uCzVtuPfsalGTAjq0hPrB2k/vTDBjixCx8pfh5AWaU8XFNPVGsCLaNSISOadH64ecb1SvPclFHh1ChERWlEFD4iCErmbPAPHRz3Xs76EJ/iOZ4dfVKxhyUIn16o4JxOW6J6Nh6Ka9J7CAIzjafpMQjPMb56xAaIdu7eLvFrdr+AC2Frd4bXrTT8HpZze+S45RuK84ee7LHiMKRCK3teQvbFxAgnIgSlVF1OBou8SJK/pPAId65FRePStwk/pbLYrgdmWBSmluqkh8Vyhf0NNgoXAchx/VqX9/3fw8Xu1F6JkzuJNOEfqqDx0lGqh6pG6iMT8YIaMDgB3LVBiiKfWBAVm+voW8YohjI3BnQBSkHasXiWJzAWwjUWR1kBsP7YLnBBz8TQq0xBvj5GP6JV+CX5JgygkEALmA23a+SaB93KTos5BW/KxvWXlQhxcrSzHA9CUDO09aLnXXvAaeGhXpDZlDdXJDKp14BAsSLA7/yt0aaymSFMNjahBh+slKohXfOCtV9ZSLLX47hcNP8=
+  bucket: ome-help-bundles
+  region: us-east-1
+  skip_cleanup: true
+  local_dir: _dist
+  acl: ''
+  on:
+    repo: glencoesoftware/ome-help
+    branch: dev_5_2
