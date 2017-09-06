@@ -4,7 +4,7 @@ cache: bundler
 rvm: 2.2.2
 install: bundle install
 script:
-- bundle exec jekyll build --config _config_dev.yml
+- bundle exec jekyll build --config _config_omero_plus.yml
 - bundle exec htmlproofer ./_site --disable-external --alt-ignore "\/images\/.*.gif"
 after_success:
 - mkdir _dist
