@@ -4,8 +4,10 @@ cache: bundler
 rvm: 2.2.2
 install: bundle install
 script:
-- bundle exec jekyll build --config _config_omero_plus.yml
+- bundle exec jekyll build --config _config_dev.yml
 - bundle exec htmlproofer ./_site --disable-external --alt-ignore "\/images\/.*.gif"
+- bundle exec jekyll clean
+- bundle exec jekyll build --config _config_omero_plus.yml
 after_success:
 - mkdir _dist
 - tar Jcf "_dist/_site-${TRAVIS_COMMIT}.tar.xz" _site
