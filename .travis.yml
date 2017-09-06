@@ -21,7 +21,6 @@ deploy:
   region: us-east-1
   skip_cleanup: true
   local_dir: _dist
-  acl: ''
   on:
     repo: glencoesoftware/ome-help
     branch: dev_5_2
